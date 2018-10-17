@@ -1,8 +1,8 @@
-const AbstractNetwork = require('./../abstract/abstract-network')
+const AbstractNetwork = require('./../abstract/abstract-network');
 // const lremove = require('lodash/remove');
-const Cyclon = require('./cyclon/cyclon')
-const lmerge = require('lodash.merge')
-
+const Cyclon = require('./cyclon/cyclon');
+const lmerge = require('lodash.merge');
+const AdapterBuilder = require('./adapterBuilder');
 /**
  * CyclonAdapter adapts the usage of a Cyclon RPS in the foglet library.
  * @extends AbstractNetwork
@@ -16,7 +16,7 @@ class CyclonAdapter extends AbstractNetwork {
         config: {iceServers: []} // define iceServers in non local instance
       },
       origins: '*'
-    }, options))
+    }, options));
   }
 
   /**
@@ -26,16 +26,20 @@ class CyclonAdapter extends AbstractNetwork {
    */
   _buildRPS (options) {
     // if webrtc options specified: create object config for Spray
-    const cyclonOptions = lmerge({config: options.webrtc}, options)
-    return new Cyclon(cyclonOptions)
+    const cyclonOptions = lmerge({config: options.webrtc}, options);
+    let rps=new Cyclon(cyclonOptions);
+    let adapterBuilder= new AdapterBuilder()
+    return adapterBuilder.getAdaptedRPS(rps,cyclonOptions);
   }
+
+
 
   /**
    * The in-view ID of the peer in the network
    * @return {string} The in-view ID of the peer
    */
   get inviewId () {
-    return this._rps.getInviewId()
+    return this._rps.getInviewId();
   }
 
   /**
@@ -43,7 +47,7 @@ class CyclonAdapter extends AbstractNetwork {
    * @return {string} The out-view ID of the peer
    */
   get outviewId () {
-    return this._rps.getOutviewId()
+    return this._rps.getOutviewId();
   }
 
   /**
@@ -52,7 +56,7 @@ class CyclonAdapter extends AbstractNetwork {
    * @return {String[]} Set of IDs for all available neighbours
    */
   getReachableNeighbours (transform = true) {
-    return this._rps.uniqNeighbours(transform)
+    return this._rps.uniqNeighbours(transform);
   }
 
   /**
@@ -61,7 +65,7 @@ class CyclonAdapter extends AbstractNetwork {
    * @return {String[]} Set of IDs for all available neighbours
    */
   getNeighbours (limit = undefined) {
-    return this._rps.getPeers(limit)
+    return this._rps.getPeers(limit);
   }
 
   /**
@@ -69,11 +73,11 @@ class CyclonAdapter extends AbstractNetwork {
    * @return {String[]} Set of IDs for all available neighbours
    */
   getArcs () {
-    const arcs = this._rps.neighbours()
-    const i = arcs.inview.map(entry => entry.peer)
-    const o = arcs.inview.map(entry => entry.peer)
-    return i.concat(o)
+    const arcs = this._rps.neighbours();
+    const i = arcs.inview.map(entry => entry.peer);
+    const o = arcs.inview.map(entry => entry.peer);
+    return i.concat(o);
   }
 }
 
-module.exports = CyclonAdapter
+module.exports = CyclonAdapter;

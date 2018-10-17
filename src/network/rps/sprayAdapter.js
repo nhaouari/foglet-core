@@ -27,7 +27,7 @@ const AbstractNetwork = require('./../abstract/abstract-network.js')
 // const lremove = require('lodash/remove');
 const Spray = require('spray-wrtc')
 const lmerge = require('lodash.merge')
-
+const AdapterBuilder = require('./adapterBuilder');
 /**
  * SprayAdapter adapts the usage of a Spray RPS in the foglet library.
  * @see https://github.com/RAN3D/spray-wrtc for more details about Spray
@@ -53,8 +53,13 @@ class SprayAdapter extends AbstractNetwork {
   _buildRPS (options) {
     // if webrtc options specified: create object config for Spray
     const sprayOptions = lmerge({config: options.webrtc}, options)
-    return new Spray(sprayOptions)
+    let rps=new Spray(sprayOptions);
+    let adapterBuilder= new AdapterBuilder()
+    return adapterBuilder.getAdaptedRPS(rps,sprayOptions);
+
   }
+
+
 
   /**
    * The in-view ID of the peer in the network
