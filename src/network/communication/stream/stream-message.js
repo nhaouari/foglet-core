@@ -56,6 +56,10 @@ class StreamMessage extends PassThrough {
   get trailers () {
     return this._trailers
   }
+
+  listenerCount (type) {
+    return this.listeners(type).length;
+  };
 }
 
 module.exports = StreamMessage

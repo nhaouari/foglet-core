@@ -43,7 +43,6 @@
     "media-recorder-stream": "^2.1.1",
     "mediasource": "^2.2.1",
     "n2n-overlay-wrtc": "^2.0.10",
-    "neighborhood-wrtc": "git+https://github.com/nhaouari/neighborhood-wrtc.git",
     "socket.io-client": "^2.1.1",
     "spray-wrtc": "^2.0.11",
     "tman-wrtc": "1.0.0",
